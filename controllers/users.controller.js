@@ -5,7 +5,8 @@ let usersService = require('../services/users.service');
 const logger = log4js.getLogger("Users Controller");
 
 module.exports = {
-    createUser : createUser
+    createUser : createUser,
+    loginUser : loginUser
 };
 
 function createUser(req, res) {
@@ -17,6 +18,20 @@ function createUser(req, res) {
       res.status(500).send(err);
     } else {
       logger.debug("Success create User : "+result);
+      res.status(200).send(result);
+    }
+  });
+}
+
+function loginUser(req, res) {
+  logger.debug("Inside createUser");
+  let userCredentials = req.body;
+  usersService.loginUser(userCredentials, (err, result) => {
+    if(err) {
+      logger.error("Login User : "+err);
+      res.status(500).send(err);
+    } else {
+      logger.debug("Success Login User : "+result);
       res.status(200).send(result);
     }
   });

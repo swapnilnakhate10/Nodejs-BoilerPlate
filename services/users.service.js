@@ -8,7 +8,8 @@ const logger = log4js.getLogger("Users Service");
 logger.debug("Banner Service Initiated");
 
 module.exports = {
-    createUser : createUser
+    createUser : createUser,
+    loginUser: loginUser
 };
 
 async function createUser(userDetails, callback) {
@@ -23,6 +24,30 @@ async function createUser(userDetails, callback) {
     logger.error('Failed to create user : ');
     logger.error(newUserDetails);
     callback(newUserDetails, null);
+  }
+}
+
+async function loginUser(credentials, callback) {
+  logger.debug('Initiated login User');
+  let findUserQuery = { username : credentials.username };
+  let userDetails = await usersDao.findOne(findUserQuery);
+  if(userDetails && userDetails._id) {
+     let isPasswordMatched = comparePassword(credentials.password, userDetails.password);
+      if(isPasswordMatched) {
+        logger.debug('User login successful : '+credentials.username);
+        delete userDetails.password;
+        callback(null, userDetails);
+     } else {
+        logger.error('User login Failed : '+credentials.username);
+        let error = new Error();
+        error.message = "Invalid Credentials";
+        callback(error, null);
+     }
+  } else {
+    logger.error('User login Failed : '+credentials.username);
+    let error = new Error();
+    error.message = "Invalid Credentials";
+    callback(error, null);
   }
 }
 

@@ -9,4 +9,6 @@ logger.debug("Users Routes Initiated");
 
 router.post('/', usersInterceptor.createUser, usersController.createUser);
 
+router.post('/login', usersInterceptor.loginUser, usersController.loginUser);
+
 module.exports = router;
