@@ -8,6 +8,11 @@
         "type" : "console",
         "level" : "debug"
     },
+    "token" : {
+        "audience" : "node-boiler",
+        "secret" : "my-secrete",
+        "issuer" : "NodeBoilerPlate"
+    },
     "saltRounds" : 10,
     "mailer" : {
         "host" : "smtp.gmail.com",

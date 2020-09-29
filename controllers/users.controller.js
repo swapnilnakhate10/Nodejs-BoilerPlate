@@ -6,7 +6,8 @@ const logger = log4js.getLogger("Users Controller");
 
 module.exports = {
     createUser : createUser,
-    loginUser : loginUser
+    loginUser : loginUser,
+    listUsers : listUsers
 };
 
 function createUser(req, res) {
@@ -32,6 +33,19 @@ function loginUser(req, res) {
       res.status(500).send(err);
     } else {
       logger.debug("Success Login User : "+result);
+      res.status(200).send(result);
+    }
+  });
+}
+
+function listUsers(req, res) {
+  logger.debug("Inside List Users");
+  usersService.listUsers((err, result) => {
+    if(err) {
+      logger.error("List Users : "+err);
+      res.status(500).send(err);
+    } else {
+      logger.debug("Success List Users : "+result.length);
       res.status(200).send(result);
     }
   });
